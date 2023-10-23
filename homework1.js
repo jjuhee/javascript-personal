@@ -11,7 +11,7 @@ const options = {
 let image_base_url="";
 let image_size="";
 const id = [];
-const title = [];
+//const title = [];
 
 fetch('https://api.themoviedb.org/3/configuration', options)
     .then(response => response.json())
@@ -25,63 +25,62 @@ fetch('https://api.themoviedb.org/3/configuration', options)
 fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', options)
     .then(response => response.json())
     .then(response => {
-        results = response['results'];
-        console.log(results);
-        results.forEach((results) => {
-            let poster_path = image_base_url + image_size +results['poster_path'];
-            let overview = results['overview'];
-            let vote_average = results['vote_average'];
-            title.push(results['title']);
-            id.push(results['id']);
-            
-            let temp_html =`
+        let results = response['results'];
+
+        //1. forEach , 화살표 함수
+        results.forEach((result) => {
+            appendMovie(result);
+        });
+    })
+    .catch(err => console.error(err));
+
+ function appendMovie(result) {
+        let poster_path = image_base_url + image_size +result['poster_path'];
+        let overview = result['overview'];
+        let vote_average = result['vote_average'];
+        let title = result['title'];
+        let id = result['id'];
+        let temp_html =`
                     <img src="${poster_path}" class="card-img" alt="...">
                     <h2 class="card-title">${title}</h2>
                     <p class="card-overview">${overview}</p>
                     <h4>Rating : ${vote_average}</h>`
 
-            const div = document.createElement('div');
-            div.innerHTML = temp_html;
-            div.className='movie-card';
-            div.id = 'movieBtn';
-            div.onclick="movieClicked();";
-            document.querySelector('section').appendChild(div);
-        });
-        
-        
-    })
-    .catch(err => console.error(err));
+        const div = document.createElement('div');
+        div.innerHTML = temp_html;
+        div.className='movie-card';
+        div.id = id;
+        div.onclick = movieClicked;
+        document.querySelector('section').appendChild(div);
+ }
 
-// element.addEventListener((type, listener)
-document.querySelector("#searchBtn").addEventListener("click", ()=> {
-    let txt = document.getElementById("inputBox").value;
-    txt = txt.toUpperCase();
-    title.filter()
-  //  if (txt === title.toUpperCase())
-    
-    console.log("jhee",txt);
+document.querySelector("#searchBtn").addEventListener("click", filterMovie);
 
-});
+function filterMovie(){
+    let input = document.getElementById("inputBox").value.toUpperCase();
+    let movieCards = document.querySelectorAll(".card-title");
 
- let movieCards = document.querySelectorAll("#movie-card");
-// console.log(movieCards);
+    console.log(movieCards);
+    for(i=0; i< movieCards.length; i++) {
+        let t = movieCards[i].innerHTML.toUpperCase();
 
-movieCards.forEach((target) => target.addEventListener("click", (target) => {
-  //  let idStr ="33";
-   // alert(`id : ${idStr}`);
-    movieClicked(target);
-})
-);
+        if (t.includes(input)) {
+            console.log("찾음!", movieCards[i].parentElement.classList);
+            movieCards[i].parentElement.classList.remove('hidden');
+        } else {
+            movieCards[i].parentElement.classList.add('hidden');
+        }
+    }
 
+}
 
-function movieClicked(target) {
-    console.log("jhee1424",target);
-     let idStr ="33";
-     alert(`id : `);
+// 영화 카드 리스너를 여기서 달아주면 안불림!!!!! -> addcard 부분에서 달아주기!
+// let movieCards = document.querySelectorAll(".movie-card");
+// movieCards.forEach((target) => target.addEventListener("click", (target) => {
+//      movieClicked(target);
+//  })
+//  );
+
+function movieClicked() {
+     alert(`id : ${this.id}`);
  };
-
-// function name () => {
-//     let idStr ="33";
-//     alert(`id : ${idStr}`);
-// }; 
-

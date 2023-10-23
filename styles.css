@@ -5,21 +5,27 @@ header {
     color : white;
     text-align: center;
 }
+
 main {
     background-color:lightgray;
 }
+
+h1 {
+    padding-top: 20px;
+}
+
 .head-div {
-    background-color: green;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
+
 .head-div>button {
     margin-left: 5px;
 }
+
 section {
-    background-color: aqua;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -29,6 +35,7 @@ section {
     width: 1200px;
     margin: auto;
 }
+
 .movie-card {
     background-color: beige;
     box-shadow: 10px 10px 2px 1px dimgray;
@@ -44,8 +51,6 @@ section {
     width:100%;
 }
 
-/* @media (max-width: 600px) {
-    section {
-
-
-      flex-direction: column;
+.hidden {
+    display: none;
+}
