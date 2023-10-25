@@ -11,28 +11,28 @@ const options = {
 
 let image_base_url = "";
 let image_size = "";
-const id = [];
-//const title = [];
 
-fetch("https://api.themoviedb.org/3/configuration", options)
-  .then((response) => response.json())
-  .then((response) => {
-    image_base_url = response["images"]["base_url"];
-    image_size = response["images"]["poster_sizes"][5];
-  })
-  .catch((err) => console.error(err));
+function getMovies() {
+  fetch("https://api.themoviedb.org/3/configuration", options)
+    .then((response) => response.json())
+    .then((response) => {
+      image_base_url = response["images"]["base_url"];
+      image_size = response["images"]["poster_sizes"][5];
+    })
+    .catch((err) => console.error(err));
 
-fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
-  .then((response) => response.json())
-  .then((response) => {
-    let results = response["results"];
+  fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
+    .then((response) => response.json())
+    .then((response) => {
+      let results = response["results"];
 
-    //1. forEach , 화살표 함수
-    results.forEach((result) => {
-      appendMovie(result);
-    });
-  })
-  .catch((err) => console.error(err));
+      //1. forEach , 화살표 함수
+      results.forEach((result) => {
+        appendMovie(result);
+      });
+    })
+    .catch((err) => console.error(err));
+}
 
 function appendMovie(result) {
   let poster_path = image_base_url + image_size + result["poster_path"];
