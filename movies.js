@@ -1,4 +1,4 @@
-// //homework.js
+// movies.js
 
 const options = {
   method: "GET",
@@ -12,6 +12,7 @@ const options = {
 let image_base_url = "";
 let image_size = "";
 
+// TMDB 영화 API로 부터 인기영화 읽어와서 영화 카드 생성하기
 function getMovies() {
   fetch("https://api.themoviedb.org/3/configuration", options)
     .then((response) => response.json())
@@ -26,7 +27,7 @@ function getMovies() {
     .then((response) => {
       let results = response["results"];
 
-      //1. forEach , 화살표 함수
+      // 필수 조건 1,2 : forEach , 화살표 함수 사용하기
       results.forEach((result) => {
         appendMovie(result);
       });
@@ -34,6 +35,7 @@ function getMovies() {
     .catch((err) => console.error(err));
 }
 
+// 영화카드 생성, 카드 div 클릭시 이벤트 핸들러 등록
 function appendMovie(result) {
   let poster_path = image_base_url + image_size + result["poster_path"];
   let overview = result["overview"];
@@ -54,8 +56,7 @@ function appendMovie(result) {
   document.querySelector("section").appendChild(div);
 }
 
-document.querySelector("#searchBtn").addEventListener("click", filterMovie);
-
+// 영화 제목을 검색하면 대소문자 구별없이 검색된 결과 카드만 필터링하여 보여준다.
 function filterMovie() {
   let input = document.getElementById("inputBox").value.toUpperCase();
   let movieCards = document.querySelectorAll(".card-title");
@@ -73,13 +74,7 @@ function filterMovie() {
   }
 }
 
-// 영화 카드 리스너를 여기서 달아주면 안불림!!!!! -> addcard 부분에서 달아주기!
-// let movieCards = document.querySelectorAll(".movie-card");
-// movieCards.forEach((target) => target.addEventListener("click", (target) => {
-//      movieClicked(target);
-//  })
-//  );
-
+// 영화 카드를 클릭하면 id를 alert 창으로 보여준다.
 function movieClicked() {
   alert(`id : ${this.id}`);
 }
